@@ -1,5 +1,5 @@
-var originalDocumentTitle = document.title
-var locationHash = window.location.hash.replace('#', '')
+const originalDocumentTitle = document.title
+const locationHash = window.location.hash.replace('#', '')
 
 /**
  * Find all elements with a data-show attribute and apply a click handler
@@ -9,15 +9,15 @@ var locationHash = window.location.hash.replace('#', '')
  */
 ;[].forEach.call(document.querySelectorAll('[data-show]'), function (el) {
   el.addEventListener('click', function (event) {
-    var action = event.target.dataset.action
-    var $formsContainer = event.currentTarget
+    const action = event.target.dataset.action
+    const $formsContainer = event.currentTarget
 
     if (!action) {
       return
     }
 
     event.preventDefault()
-    var showTarget = action.substr('show-'.length)
+    const showTarget = action.substr('show-'.length)
     $formsContainer.dataset.show = showTarget
     setHashState(showTarget)
   })
@@ -33,24 +33,24 @@ var locationHash = window.location.hash.replace('#', '')
 document.querySelector('form.signup').addEventListener('submit', function (event) {
   event.preventDefault()
 
-  var email = this.querySelector('[name=email]').value
-  var password = this.querySelector('[name=password]').value
+  const email = this.querySelector('[name=email]').value
+  const password = this.querySelector('[name=password]').value
 
   hoodie.account.signUp({
     username: email,
     password: password
   })
 
-  .then(function () {
-    return hoodie.account.signIn({
-      username: email,
-      password: password
+    .then(function () {
+      return hoodie.account.signIn({
+        username: email,
+        password: password
+      })
     })
-  })
 
-  .then(setHashState)
+    .then(setHashState)
 
-  .catch(handleError)
+    .catch(handleError)
 })
 
 /**
@@ -59,17 +59,17 @@ document.querySelector('form.signup').addEventListener('submit', function (event
 document.querySelector('form.signin').addEventListener('submit', function (event) {
   event.preventDefault()
 
-  var email = this.querySelector('[name=email]').value
-  var password = this.querySelector('[name=password]').value
+  const email = this.querySelector('[name=email]').value
+  const password = this.querySelector('[name=password]').value
 
   hoodie.account.signIn({
     username: email,
     password: password
   })
 
-  .then(setHashState)
+    .then(setHashState)
 
-  .catch(handleError)
+    .catch(handleError)
 })
 
 /**
@@ -78,13 +78,13 @@ document.querySelector('form.signin').addEventListener('submit', function (event
 document.querySelector('form.change-email').addEventListener('submit', function (event) {
   event.preventDefault()
 
-  var email = this.querySelector('[name=email]').value
+  const email = this.querySelector('[name=email]').value
 
   hoodie.account.update({
     username: email
   })
 
-  .catch(handleError)
+    .catch(handleError)
 })
 
 /**
@@ -93,20 +93,20 @@ document.querySelector('form.change-email').addEventListener('submit', function 
 document.querySelector('form.password-reset').addEventListener('submit', function (event) {
   event.preventDefault()
 
-  var email = this.querySelector('[name=email]').value
+  const email = this.querySelector('[name=email]').value
 
   hoodie.account.request({
     type: 'passwordreset',
     username: email
   })
 
-  .then(function () {
-    alert('Email sent to ' + email)
-    document.querySelector('[data-show="password-reset"]').dataset.show = 'signin'
-    setHashState('signin')
-  })
+    .then(function () {
+      alert('Email sent to ' + email)
+      document.querySelector('[data-show="password-reset"]').dataset.show = 'signin'
+      setHashState('signin')
+    })
 
-  .catch(handleError)
+    .catch(handleError)
 })
 
 /**
@@ -115,13 +115,13 @@ document.querySelector('form.password-reset').addEventListener('submit', functio
 document.querySelector('form.change-password').addEventListener('submit', function (event) {
   event.preventDefault()
 
-  var password = this.querySelector('[name=password]').value
+  const password = this.querySelector('[name=password]').value
 
   hoodie.account.update({
     password: password
   })
 
-  .catch(handleError)
+    .catch(handleError)
 })
 
 /**
@@ -149,7 +149,7 @@ document.querySelector('[data-action=signout]').addEventListener('click', functi
   event.preventDefault()
   hoodie.account.signOut()
 
-  .then(setHashState)
+    .then(setHashState)
 })
 
 /**
@@ -166,11 +166,11 @@ function handleError (error) {
 }
 
 function setHashState (hash) {
-  var url = window.location.origin + window.location.pathname
-  var title = originalDocumentTitle
+  let url = window.location.origin + window.location.pathname
+  let title = originalDocumentTitle
   if (typeof hash === 'string') {
     url += '#' + hash
-    var formattedHash = hash
+    const formattedHash = hash
       .split('-')
       .map(function (string) {
         return string.charAt(0).toUpperCase() + string.slice(1)

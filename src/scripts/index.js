@@ -1,6 +1,6 @@
-var $addItemForm = document.querySelector('form.add-item')
-var $itemsList = document.querySelector('.items .list')
-var $clearButton = document.querySelector('[data-action="clear"]')
+const $addItemForm = document.querySelector('form.add-item')
+const $itemsList = document.querySelector('.items .list')
+const $clearButton = document.querySelector('[data-action="clear"]')
 
 /**
  * With hoodie we're storing our data locally and it will stick around next time you reload.
@@ -38,8 +38,8 @@ $addItemForm.addEventListener('submit', function (event) {
   event.preventDefault()
 
   // Get values from inputs, then clear the form
-  var amount = $addItemForm.querySelector('[name=amount]').value
-  var note = $addItemForm.querySelector('[name=note]').value
+  const amount = $addItemForm.querySelector('[name=amount]').value
+  const note = $addItemForm.querySelector('[name=note]').value
   $addItemForm.reset()
 
   hoodie.store.add({
@@ -57,21 +57,21 @@ $addItemForm.addEventListener('submit', function (event) {
 $itemsList.addEventListener('click', function (event) {
   event.preventDefault()
 
-  var action = event.target.dataset.action
+  const action = event.target.dataset.action
   if (!action) {
     return
   }
 
-  var row = event.target.parentNode.parentNode
-  var id = row.dataset.id
-  var amount = row.firstChild.textContent
-  var note = row.firstChild.nextSibling.textContent
+  const row = event.target.parentNode.parentNode
+  const id = row.dataset.id
+  let amount = row.firstChild.textContent
+  let note = row.firstChild.nextSibling.textContent
 
   switch (action) {
     case 'edit':
       row.innerHTML = '<td><input type="number" name="amount" value="' + amount + '" data-reset-value="' + amount + '"></td>' +
-                      '<td><input type="text" name="note" value="' + note + '" data-reset-value="' + note + '"></td>' +
-                      '<td><a href="#" data-action="update">Save</a></td><td><a href="#" data-action="cancel">Cancel</a></td>'
+        '<td><input type="text" name="note" value="' + note + '" data-reset-value="' + note + '"></td>' +
+        '<td><a href="#" data-action="update">Save</a></td><td><a href="#" data-action="cancel">Cancel</a></td>'
       break
     case 'cancel':
       loadAndRenderItems()
@@ -103,11 +103,11 @@ function render (items) {
     .sort(orderByCreatedAt)
     .map(function (item) {
       return '<tr data-id="' + item.id + '">' +
-             '<td>' + item.amount + '</td>' +
-             '<td>' + item.note + '</td>' +
-             '<td><a href="#" data-action="edit">Edit</a></td>' +
-             '<td><a href="#" data-action="remove">Delete</a></td>' +
-             '</tr>'
+      '<td>' + item.amount + '</td>' +
+      '<td>' + item.note + '</td>' +
+      '<td><a href="#" data-action="edit">Edit</a></td>' +
+      '<td><a href="#" data-action="remove">Delete</a></td>' +
+      '</tr>'
     }).join('')
 }
 function orderByCreatedAt (item1, item2) {
